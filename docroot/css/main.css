@@ -1,0 +1,35 @@
+.sidebarTemplate{
+	float: left;
+	width: 20%;
+	margin-right: 5px;
+}
+
+.bodyTemplate{	
+	float: right;
+	width: 79%;
+	margin-right: 1px;
+}
+
+.divContent{
+	overflow: hidden;
+}
+
+.tituloModulo {
+	font-weight: bold;
+}
+.spacer15{
+	height: 15px;
+}
+
+.columnLabelsDetalle{
+	padding: 0px;
+	text-align: left;
+	width: 30%;
+	font-weight: bold;
+	height: 30px;
+}
+
+.columnDatosDetalle{
+	width: 70%;
+	text-align: left;
+}

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#config#entidad#listado.xhtml"
+  PATH="/config/entidad/listado.xhtml" SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#config#entidad#*" PATH="/config/entidad/*"
+  SHAPE="32,129,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#config#entidad#*:0" NAME="item"
+   PATH="/config/entidad/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="listado::#config#entidad#listado.xhtml"
+    NAME="output" PATH="/config/entidad/listado.xhtml"
+    TARGET="rules:#config#entidad#listado.xhtml" TITLE="listado" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="agregar::#config#entidad#agregar.xhtml"
+    NAME="output1" PATH="/config/entidad/agregar.xhtml"
+    TARGET="rules:#config#entidad#agregar.xhtml" TITLE="agregar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="actualizar::#config#entidad#actualizar.xhtml" NAME="output2"
+    PATH="/config/entidad/actualizar.xhtml"
+    TARGET="rules:#config#entidad#actualizar.xhtml" TITLE="actualizar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="eliminar::#config#entidad#eliminar.xhtml"
+    NAME="output3" PATH="/config/entidad/eliminar.xhtml"
+    TARGET="rules:#config#entidad#eliminar.xhtml" TITLE="eliminar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="transaccionExitosa::#config#entidad#listado.xhtml"
+    NAME="output4" PATH="/config/entidad/listado.xhtml"
+    TARGET="rules:#config#entidad#listado.xhtml"
+    TITLE="transaccionExitosa" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#config#entidad#agregar.xhtml"
+  PATH="/config/entidad/agregar.xhtml" SHAPE="272,145,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#config#entidad#actualizar.xhtml"
+  PATH="/config/entidad/actualizar.xhtml" SHAPE="288,353,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#config#entidad#eliminar.xhtml"
+  PATH="/config/entidad/eliminar.xhtml" SHAPE="288,353,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#config#cadenasconexion#listado.xhtml"
+  PATH="/config/cadenasconexion/listado.xhtml" SHAPE="304,417,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#config#cadenasconexion#*"
+  PATH="/config/cadenasconexion/*" SHAPE="32,513,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#config#cadenasconexion#*:0" NAME="item"
+   PATH="/config/cadenasconexion/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listado::#config#cadenasconexion#listado.xhtml" NAME="output"
+    PATH="/config/cadenasconexion/listado.xhtml"
+    TARGET="rules:#config#cadenasconexion#listado.xhtml" TITLE="listado" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="agregar::#config#cadenasconexion#agregar.xhtml" NAME="output1"
+    PATH="/config/cadenasconexion/agregar.xhtml"
+    TARGET="rules:#config#cadenasconexion#agregar.xhtml" TITLE="agregar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="actualizar::#config#cadenasconexion#actualizar.xhtml"
+    NAME="output2" PATH="/config/cadenasconexion/actualizar.xhtml"
+    TARGET="rules:#config#cadenasconexion#actualizar.xhtml"
+    TITLE="actualizar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="eliminar::#config#cadenasconexion#eliminar.xhtml" NAME="output3"
+    PATH="/config/cadenasconexion/eliminar.xhtml"
+    TARGET="rules:#config#cadenasconexion#eliminar.xhtml"
+    TITLE="eliminar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="transaccionExitosa::#config#cadenasconexion#listado.xhtml"
+    NAME="output4" PATH="/config/cadenasconexion/listado.xhtml"
+    TARGET="rules:#config#cadenasconexion#listado.xhtml"
+    TITLE="transaccionExitosa" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#config#cadenasconexion#actualizar.xhtml"
+  PATH="/config/cadenasconexion/actualizar.xhtml" SHAPE="304,417,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#config#cadenasconexion#agregar.xhtml"
+  PATH="/config/cadenasconexion/agregar.xhtml" SHAPE="304,769,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#config#cadenasconexion#eliminar.xhtml"
+  PATH="/config/cadenasconexion/eliminar.xhtml" SHAPE="304,881,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#config#*" PATH="/config/*" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#config#*:0" NAME="item" PATH="/config/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="gestionEntidadesEspecialidad::#config#entidad#listado.xhtml"
+    NAME="output" PATH="/config/entidad/listado.xhtml"
+    TARGET="rules:#config#entidad#listado.xhtml"
+    TITLE="gestionEntidadesEspecialidad" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="gestionCadenasConexion::#config#cadenasconexion#listado.xhtml"
+    NAME="output1" PATH="/config/cadenasconexion/listado.xhtml"
+    TARGET="rules:#config#cadenasconexion#listado.xhtml"
+    TITLE="gestionCadenasConexion" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="gestionDocumentos::#config#documentos#listado.xhtml"
+    NAME="output2" PATH="/config/documentos/listado.xhtml"
+    TARGET="rules:#config#documentos#listado.xhtml"
+    TITLE="gestionDocumentos" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#config#documentos#listado.xhtml"
+  PATH="/config/documentos/listado.xhtml" SHAPE="304,449,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#config#documentos#*"
+  PATH="/config/documentos/*" SHAPE="32,897,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#config#documentos#*:0" NAME="item"
+   PATH="/config/documentos/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="listado::#config#documentos#listado.xhtml"
+    NAME="output" PATH="/config/documentos/listado.xhtml"
+    TARGET="rules:#config#documentos#listado.xhtml" TITLE="listado" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="agregar::#config#documentos#agregar.xhtml"
+    NAME="output1" PATH="/config/documentos/agregar.xhtml"
+    TARGET="rules:#config#documentos#agregar.xhtml" TITLE="agregar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="actualizar::#config#documentos#actualizar.xhtml" NAME="output2"
+    PATH="/config/documentos/actualizar.xhtml"
+    TARGET="rules:#config#documentos#actualizar.xhtml"
+    TITLE="actualizar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="eliminar::#config#documentos#eliminar.xhtml"
+    NAME="output3" PATH="/config/documentos/eliminar.xhtml"
+    TARGET="rules:#config#documentos#eliminar.xhtml" TITLE="eliminar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="transaccionExitosa::#config#documentos#listado.xhtml"
+    NAME="output4" PATH="/config/documentos/listado.xhtml"
+    TARGET="rules:#config#documentos#listado.xhtml"
+    TITLE="transaccionExitosa" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#config#documentos#actualizar.xhtml"
+  PATH="/config/documentos/actualizar.xhtml" SHAPE="304,1377,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#config#documentos#eliminar.xhtml"
+  PATH="/config/documentos/eliminar.xhtml" SHAPE="304,449,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#config#documentos#agregar.xhtml"
+  PATH="/config/documentos/agregar.xhtml" SHAPE="304,913,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

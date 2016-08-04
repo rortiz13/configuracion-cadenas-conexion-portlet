@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:aui-cc="http://liferay.com/faces/aui-cc"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="internalTemplate.xhtml">
+	<ui:define name="content">
+
+<f:metadata>
+  <f:event type="preRenderView" listener="#{entidadesBean.cargarObjeto}"/>
+</f:metadata>
+
+		<div class="spacer15"></div>
+		<h:form style="padding-bottom: 3px;" id="formAgregar">
+		
+			<h:inputHidden value="#{entidadesBean.idRegSeleccionado}"></h:inputHidden>
+
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{i18n['eliminar-registro']}"></h:outputText>
+				</f:facet>
+
+				<aui-cc:messages globalOnly="false" layout="list" />
+
+				<h:panelGrid columns="2" width="100%"
+					columnClasses="columnLabelsDetalle,columnDatosDetalle">
+
+					<h:outputLabel value="#{i18n['nombre']}"></h:outputLabel>
+					<h:outputText value="#{entidadesBean.registroSelecionado.nombre}"></h:outputText>
+
+
+					<h:outputLabel value="#{i18n['ciudad']}"></h:outputLabel>
+					<h:outputText value="#{entidadesBean.registroSelecionado.ciudad.nombre}"></h:outputText>
+
+					<h:outputLabel value="#{i18n['entidad']}"></h:outputLabel>
+					<h:outputText value="#{entidadesBean.registroSelecionado.entidad.nombre}"></h:outputText>
+
+					<h:outputLabel value="#{i18n['especialidad']}"></h:outputLabel>
+					<h:outputText value="#{entidadesBean.registroSelecionado.especialidad.nombre}"></h:outputText>
+
+					<h:outputLabel value="#{i18n['agrupacion']}"></h:outputLabel>
+					<h:outputText value="#{entidadesBean.registroSelecionado.codAgrupacion}"></h:outputText>
+
+
+					<h:outputLabel value="#{i18n['orden']}"></h:outputLabel>
+					<h:outputText value="#{entidadesBean.registroSelecionado.orden}"></h:outputText>
+					
+					
+
+				</h:panelGrid>
+				<div class="spacer15"></div>
+				<div align="center">
+
+					<h:panelGrid columns="2">
+						<h:commandButton action="#{entidadesBean.eliminarRegistro}"
+							value="#{i18n['eliminar-registro']}" rendered="#{cadenaConexionBean.permittedToDelete}" 
+							onclick="if (!confirm('#{i18n['corfim-eliminar-registro']}')) return false">
+						</h:commandButton>
+
+					</h:panelGrid>
+				</div>
+
+			</rich:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

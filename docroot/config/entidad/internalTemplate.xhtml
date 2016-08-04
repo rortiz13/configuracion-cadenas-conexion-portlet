@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aui-cc="http://liferay.com/faces/aui-cc"
+	xmlns:rich="http://richfaces.org/rich"
+	template="../layouts/template.xhtml">
+
+	<ui:define name="body">
+		<h:panelGrid columns="2">
+			<h:graphicImage value="/images/current.png" width="16" height="16"
+				style="margin-right:3px; padding-right:3px;" />
+			<h:outputText value="#{i18n['entidades-especialidades']}" styleClass="tituloModulo"></h:outputText>
+		</h:panelGrid>
+		<h:form style="padding-bottom: 3px;" id="formToolBar">
+
+			<rich:toolbar height="34" itemSeparator="grid" id="toolBar"
+				separatorClass="separator">
+				<rich:toolbarGroup>
+					<h:panelGroup>
+						<h:commandLink rendered="#{entidadesBean.permittedToView}" value="#{i18n['consultar-registros']}"
+							id="listado" action="listado" />
+					</h:panelGroup>
+				</rich:toolbarGroup>
+				<rich:toolbarGroup>
+					<h:panelGroup>
+						<h:commandLink rendered="#{entidadesBean.permittedToAdd}" value="#{i18n['agregar-registro']}"
+							id="agregar" action="agregar" />
+					</h:panelGroup>
+				</rich:toolbarGroup>
+
+			</rich:toolbar>
+		</h:form>
+		<aui-cc:messages globalOnly="true" layout="list" />
+		<ui:insert name="content" />
+
+
+	</ui:define>
+
+
+
+</ui:composition>

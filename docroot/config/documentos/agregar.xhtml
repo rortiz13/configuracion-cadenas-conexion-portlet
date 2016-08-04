@@ -1,0 +1,125 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:aui-cc="http://liferay.com/faces/aui-cc"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="internalTemplate.xhtml">
+	<ui:define name="content">
+
+		<div class="spacer15"></div>
+		<h:form style="padding-bottom: 3px;" id="formAgregar">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{i18n['agregar-registro']}"></h:outputText>
+				</f:facet>
+
+				<aui-cc:messages globalOnly="false" layout="list" />
+
+				<h:panelGrid columns="2" width="100%"
+					columnClasses="columnLabelsDetalle,columnDatosDetalle">
+					
+					<h:outputLabel value="#{i18n['ciudad']}"></h:outputLabel>
+					<h:selectOneMenu id="ciudadesSelect" required="true"
+						label="#{i18n['ciudad']}"
+						value="#{documentosBean.idCiudadSeleccionada}">
+						<f:selectItem itemLabel="#{i18n['seleccione']}" />
+						<f:selectItems value="#{documentosBean.ciudadesItems}" />
+					</h:selectOneMenu>
+					
+					<h:outputLabel value="#{i18n['alcance']}"></h:outputLabel>
+					<h:selectOneMenu id="alcanceSelect" required="true"
+						label="#{i18n['alcance']}"
+						value="#{documentosBean.idAlcance}">
+						<f:selectItems value="#{documentosBean.alcanceItems}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="#{i18n['ip']}"></h:outputLabel>
+					<h:inputText value="#{documentosBean.nuevoRegistro.ipPrivada}" required="true"
+						label="#{i18n['ip']}"  >
+						<f:validateLength maximum="16"></f:validateLength>
+					</h:inputText>
+										
+					<h:outputLabel value="#{i18n['carpeta']}"></h:outputLabel>
+					<h:inputText value="#{documentosBean.nuevoRegistro.carpeta}"
+						label="#{i18n['carpeta']}" required="true" >
+						<f:validateLength maximum="255"></f:validateLength>
+					</h:inputText>			
+				
+					
+			
+						
+						<h:outputLabel value="#{i18n['usuario']}" ></h:outputLabel>
+						<h:inputText value="#{documentosBean.nuevoRegistro.usuario}" required="true"
+							label="#{i18n['usuario']}" >
+							<f:validateLength maximum="16"></f:validateLength>
+						</h:inputText>					
+							
+						<h:outputLabel value="#{i18n['password']}"></h:outputLabel>
+						<h:inputSecret id="pass" value="#{documentosBean.nuevoRegistro.contrasena}" required="true"
+							label="#{i18n['password']}"  autocomplete="off">
+							<f:validateLength maximum="32"></f:validateLength>	
+						</h:inputSecret>
+						
+						<h:outputLabel value="#{i18n['dominio']}"></h:outputLabel>
+					<h:inputText value="#{documentosBean.nuevoRegistro.dominio}"
+						label="#{i18n['dominio']}" >
+						<f:validateLength maximum="32"></f:validateLength>
+					</h:inputText>
+						
+					</h:panelGrid>	
+				
+				<h:panelGrid columns="2" width="100%"
+					columnClasses="columnLabelsDetalle,columnDatosDetalle">
+					
+					
+					
+					<h:outputLabel value="#{i18n['activo']}"></h:outputLabel>
+					<h:selectBooleanCheckbox value="#{documentosBean.nuevoRegistro.habilitado}"   label="#{i18n['activo']}"  />					
+					
+				</h:panelGrid>	
+
+				<div class="spacer15"></div>
+			<h:panelGrid id="probarCadenaConexion">
+				
+					<h:outputText value="#{i18n['conexion-error']}" styleClass="portlet-msg-error" rendered="#{!documentosBean.conexionexitosa and documentosBean.probarconexion}" />
+				
+					<h:outputText value="#{i18n['conexion-exitosa']}" styleClass="portlet-msg-info"  rendered="#{documentosBean.conexionexitosa and documentosBean.probarconexion}" />
+				
+					
+				</h:panelGrid>					
+					<a4j:commandButton value="#{i18n['probar-conexion']}"
+						action="#{documentosBean.probarCadenaConexionNuevo}"
+						execute="@form"
+						onbegin="#{rich:component('modalLoading')}.show();"
+						oncomplete="#{rich:component('modalLoading')}.hide();"
+						render="probarCadenaConexion" onclick="return valid(this);">
+					</a4j:commandButton>
+				
+
+				<div class="spacer15"></div>
+				<div align="center">
+
+					<h:panelGrid columns="2">
+						<h:commandButton action="#{documentosBean.crearRegistro}"
+							value="#{i18n['agregar-registro']}"
+							onclick="if (!confirm('#{i18n['corfim-agregar-registro']}')) return false">
+						</h:commandButton>
+
+						<h:commandButton immediate="true" value="#{i18n['limpiar']}"  
+							action="agregar">
+						</h:commandButton>
+
+					</h:panelGrid>
+				</div>
+
+			</rich:panel>
+			
+			
+			
+
+		</h:form>
+	</ui:define>
+</ui:composition>

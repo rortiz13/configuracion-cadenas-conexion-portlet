@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:aui-cc="http://liferay.com/faces/aui-cc"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="internalTemplate.xhtml">
+	<ui:define name="content">
+
+<f:metadata>
+  <f:event type="preRenderView" listener="#{documentosBean.cargarObjeto}"/>
+</f:metadata>
+
+		<div class="spacer15"></div>
+		<h:form style="padding-bottom: 3px;" id="formEliminar">
+		
+			<h:inputHidden value="#{documentosBean.idRegSeleccionado}"></h:inputHidden>
+
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{i18n['eliminar-registro']}"></h:outputText>
+				</f:facet>
+
+				<aui-cc:messages globalOnly="false" layout="list" />
+
+				<h:panelGrid columns="2" width="100%"
+					columnClasses="columnLabelsDetalle,columnDatosDetalle">
+
+					<h:outputLabel value="#{i18n['ip-publica']}"></h:outputLabel>
+					<h:outputText value="#{documentosBean.registroSelecionado.ipPublica}"></h:outputText>
+
+
+					<h:outputLabel value="#{i18n['ip-privada']}"></h:outputLabel>
+					<h:outputText value="#{documentosBean.registroSelecionado.ipPrivada}"></h:outputText>
+
+					<h:outputLabel value="#{i18n['carpeta']}"></h:outputLabel>
+					<h:outputText value="#{documentosBean.registroSelecionado.carpeta}"></h:outputText>					
+
+					<h:outputLabel value="#{i18n['auth']}"></h:outputLabel>
+					<h:selectBooleanCheckbox value="#{documentosBean.registroSelecionado.auth}" disabled="true" />
+					
+				</h:panelGrid>		
+				<h:panelGrid id="auth" columns="2" width="100%"
+					columnClasses="columnLabelsDetalle,columnDatosDetalle"
+					>
+					
+					<h:outputLabel value="#{i18n['usuario']}"></h:outputLabel>
+			    	<h:outputText value="#{documentosBean.registroSelecionado.usuario}"></h:outputText>			    	
+			    	
+				</h:panelGrid>	
+				<h:panelGrid columns="2" width="100%"
+					columnClasses="columnLabelsDetalle,columnDatosDetalle">
+					
+					<h:outputLabel value="#{i18n['dominio']}"></h:outputLabel>
+			    	<h:outputText value="#{documentosBean.registroSelecionado.dominio}"></h:outputText>
+			    	
+			    	<h:outputLabel value="#{i18n['activo']}"></h:outputLabel>
+					<h:selectBooleanCheckbox value="#{documentosBean.registroSelecionado.habilitado}" disabled="true" />
+ 
+				</h:panelGrid>
+				<div class="spacer15"></div>
+				<div align="center">
+
+					<h:panelGrid columns="2">
+						<h:commandButton action="#{documentosBean.eliminarRegistro}"
+							value="#{i18n['eliminar-registro']}"  
+							onclick="if (!confirm('#{i18n['corfim-eliminar-registro']}')) return false">
+						</h:commandButton>
+
+					</h:panelGrid>
+				</div>
+
+			</rich:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

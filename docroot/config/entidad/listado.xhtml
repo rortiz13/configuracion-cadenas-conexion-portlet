@@ -1,0 +1,139 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:liferay-ui="http://liferay.com/faces/ui"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="internalTemplate.xhtml">
+	<ui:define name="content">
+
+		<div class="spacer15"></div>
+		
+		<h:form style="padding-bottom: 3px;" id="formListado">
+
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{i18n['listado-entidades']}"></h:outputText>
+				</f:facet>
+
+				<h:panelGrid columns="2" width="100%">
+					<h:outputText value="#{i18n['nombre']}"></h:outputText>
+					<h:outputText value="#{i18n['ciudad']}"></h:outputText>
+
+
+					<h:inputText value="#{entidadesBean.nombrePersonalizado}"
+						label="#{i18n['nombre']}"></h:inputText>
+
+					<h:selectOneMenu id="ciudadesSelect" required="false"
+						label="#{i18n['ciudad']}"
+						value="#{entidadesBean.idCiudadSeleccionada}">
+						<f:selectItem itemLabel="#{i18n['seleccione']}" />
+						<f:selectItems value="#{entidadesBean.ciudadesItems}" />
+					</h:selectOneMenu>
+
+
+					<h:outputText value="#{i18n['entidad']}"></h:outputText>
+					<h:outputText value="#{i18n['especialidad']}"></h:outputText>
+
+
+
+					<h:selectOneMenu id="entidadesSelect" required="false"
+						label="#{i18n['entidad']}"
+						value="#{entidadesBean.idEntidadSeleccionada}">
+						<f:selectItem itemLabel="#{i18n['seleccione']}" />
+						<f:selectItems value="#{entidadesBean.entidadesItems}" />
+					</h:selectOneMenu>
+
+					<h:selectOneMenu id="especialidadesSelect" required="false"
+						label="#{i18n['especialidad']}"
+						value="#{entidadesBean.idEspecialidadSeleccionada}">
+						<f:selectItem itemLabel="#{i18n['seleccione']}" />
+						<f:selectItems value="#{entidadesBean.especialidadesItems}" />
+					</h:selectOneMenu>
+
+				</h:panelGrid>
+				<div class="spacer15"></div>
+				<div align="center">
+					<h:panelGrid columns="3">
+						<h:commandButton value="#{i18n['buscar']}"
+							action="#{entidadesBean.cargaFiltrosDataModel}"></h:commandButton>
+
+						<h:commandButton value="#{i18n['limpiar']}" action="#{entidadesBean.limpiar}"></h:commandButton>
+						<h:outputText value=" "></h:outputText>
+
+					</h:panelGrid>
+				</div>
+
+			</rich:panel>
+
+			<div class="spacer15"></div>
+
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{i18n['resultados-encontrados']}"></h:outputText>
+				</f:facet>
+
+				<rich:dataTable style="width: 100%;" rows="20" var="dato"
+					id="dataTable" value="#{entidadesBean.estidadesDataModel}" >
+					<f:facet name="header">
+						<rich:columnGroup>
+							<rich:column>
+								<h:outputText value="#{i18n['nombre']}"></h:outputText>
+							</rich:column>
+							<rich:column>
+								<h:outputText value="#{i18n['ciudad']}"></h:outputText>
+							</rich:column>
+							<rich:column>
+								<h:outputText value="#{i18n['entidad']}"></h:outputText>
+							</rich:column>
+							<rich:column>
+								<h:outputText value="#{i18n['especialidad']}"></h:outputText>
+							</rich:column>
+							<rich:column>
+								<h:outputText value="#{i18n['opciones']}"></h:outputText>
+							</rich:column>
+						</rich:columnGroup>
+					</f:facet>
+					<rich:column>
+						<h:outputText value="#{dato.nombre}"></h:outputText>
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{dato.ciudad.nombre}"></h:outputText>
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{dato.entidad.nombre}"></h:outputText>
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{dato.especialidad.nombre}"></h:outputText>
+					</rich:column>
+
+					<rich:column>
+						<h:panelGrid columns="2">
+						<h:commandLink style="color: #FFFFFF;" action="actualizar"  rendered="#{entidadesBean.permittedToUpdate}">
+								<h:graphicImage alt="#{i18n['actualizar']}"
+									title="#{i18n['actualizar']}"
+									url="#{liferay.themeImagesURL}/common/edit.png"></h:graphicImage>
+								<f:param name="idRegSeleccionado" value="#{dato.id}" />
+							</h:commandLink>
+							<h:commandLink style="color: #FFFFFF;"
+								action="eliminar" rendered="#{entidadesBean.permittedToDelete}" >
+								<h:graphicImage alt="#{i18n['eliminar']}"
+									title="#{i18n['eliminar']}"
+									url="#{liferay.themeImagesURL}/common/delete.png"></h:graphicImage>
+								<f:param name="idRegSeleccionado" value="#{dato.id}" />
+							</h:commandLink>
+
+							
+						</h:panelGrid>
+					</rich:column>
+					<f:facet name="footer">
+						<rich:dataScroller id="ds" maxPages="5" for="dataTable"></rich:dataScroller>
+					</f:facet>
+				</rich:dataTable>
+
+			</rich:panel>
+		</h:form>
+</ui:define>
+</ui:composition>

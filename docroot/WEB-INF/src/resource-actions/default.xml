@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE resource-action-mapping PUBLIC "-//Liferay//DTD Resource Action Mapping 6.1.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_6_1_0.dtd">
+
+<resource-action-mapping>
+	<portlet-resource>
+		<portlet-name>configuracion-cadenas-conexion</portlet-name>
+		<permissions>
+			<supports>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults />
+			<guest-defaults />
+			<guest-unsupported>
+				<action-key>VIEW</action-key>
+			</guest-unsupported>
+		</permissions>
+	</portlet-resource>
+	<model-resource>
+		<model-name>la.netco.configconsultaprocesos.cadenaconexion</model-name>
+		<portlet-ref>
+			<portlet-name>configuracion-cadenas-conexion</portlet-name>
+		</portlet-ref>
+
+		<permissions>
+
+			<supports>
+				<action-key>UPDATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>ADD_RECORD</action-key>
+				<action-key>VIEW</action-key>
+				<action-key>UPDATE_ALL</action-key>
+			</supports>
+			<community-defaults />
+			<guest-defaults />
+			<guest-unsupported>
+				<action-key>UPDATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>ADD_RECORD</action-key>
+				<action-key>VIEW</action-key>
+				<action-key>UPDATE_ALL</action-key>
+			</guest-unsupported>
+		</permissions>
+	</model-resource>
+	<model-resource>
+		<model-name>la.netco.configconsultaprocesos.entidadespecialidad</model-name>
+
+		<portlet-ref>
+			<portlet-name>configuracion-cadenas-conexion</portlet-name>
+		</portlet-ref>
+		<permissions>
+			<supports>
+				<action-key>UPDATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>ADD_RECORD</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<community-defaults />
+			<guest-defaults />
+			<guest-unsupported>
+				<action-key>UPDATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>ADD_RECORD</action-key>
+				<action-key>VIEW</action-key>
+			</guest-unsupported>
+		</permissions>
+	</model-resource>
+</resource-action-mapping>

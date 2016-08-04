@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" version="2.0">
+	<portlet>
+		<portlet-name>configuracion-cadenas-conexion</portlet-name>
+		<display-name>Configuracion Cadenas de Conexion</display-name>
+		<portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
+		<init-param>
+			<name>javax.portlet.faces.defaultViewId.view</name>
+			<value>/config/index.xhtml</value>
+		</init-param>
+		<init-param>
+			<name>javax.portlet.faces.default</name>
+			<value>/config/index.xhtml</value>
+		</init-param>
+		<init-param>
+			<name>javax.portlet.faces.preserveActionParams</name>
+			<value>true</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+            <portlet-mode>VIEW</portlet-mode>
+		</supports>
+		<portlet-info>
+			<title>Configuracion Cadenas de Conexion</title>
+			<short-title>Configuracion Cadenas de Conexion</short-title>
+			<keywords>Configuracion Cadenas de Conexion</keywords>
+		</portlet-info>
+		<security-role-ref>
+			<role-name>administrator</role-name>
+		</security-role-ref>
+	</portlet>
+</portlet-app>

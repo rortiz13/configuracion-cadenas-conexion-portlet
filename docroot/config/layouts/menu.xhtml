@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich">
+	<h:form id="formMenu">
+
+		<rich:panelMenu  itemMode="server"
+				groupExpandedLeftIcon="triangleUp"
+                groupCollapsedLeftIcon="triangleDown"
+                topGroupExpandedRightIcon="chevronUp"
+                topGroupCollapsedRightIcon="chevronDown" itemLeftIcon="disc"
+				activeItem="#{current}">
+			<rich:panelMenuGroup  label="#{i18n['configuracion']}" expanded="true" > 
+						<rich:panelMenuItem id="gestionCadenasConexion" label="#{i18n['cadenas-conexion']}"  action="gestionCadenasConexion" rendered="#{cadenaConexionBean.permittedToView}" >
+							 <f:setPropertyActionListener target="#{current}" value="gestionCadenasConexion" />
+						</rich:panelMenuItem>	
+						<rich:panelMenuItem id="gestionEntidadesEspecialidad" label="#{i18n['entidades-especialidades']}"  action="gestionEntidadesEspecialidad" rendered="#{entidadesBean.permittedToView}" >
+							 <f:setPropertyActionListener target="#{current}" value="gestionEntidadesEspecialidad"/>
+						</rich:panelMenuItem>
+						<rich:panelMenuItem id="gestionDocumentos" label="#{i18n['documentos']}"  action="gestionDocumentos" >
+							 <f:setPropertyActionListener target="#{current}" value="gestionDocumentos"/>
+						</rich:panelMenuItem>
+																			
+			</rich:panelMenuGroup>
+		</rich:panelMenu>
+	</h:form>
+</ui:composition>

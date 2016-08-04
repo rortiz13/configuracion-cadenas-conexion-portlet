@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:fiji="http://exadel.com/fiji"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="layouts/template.xhtml">
+	<ui:define name="body">
+
+		<h:form>
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{i18n['configuracion-consulta-procesos']}"></h:outputText>
+				</f:facet>
+
+				<rich:panel>
+					<h:panelGrid columns="2">
+						<h:graphicImage value="/img/icons/info.png" width="25" height="25"
+							style="margin-right:3px; padding-right:3px;" />
+						<h:outputText value="#{i18n['seleccione-opcion-menu']}"></h:outputText>
+					</h:panelGrid>
+				</rich:panel>
+			</rich:panel>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>
+

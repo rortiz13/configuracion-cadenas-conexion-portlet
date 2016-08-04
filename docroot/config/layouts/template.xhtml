@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>#{i18n['configuracion-consulta-procesos']}</title>
+	<ui:insert name="head" />
+</h:head>
+<h:body>
+	<div class="divContent">
+		<div class="headerTemplate"></div>
+		<br />
+		<div class="sidebarTemplate">
+			<ui:include src="menu.xhtml" />
+		</div>
+
+		<div class="bodyTemplate">
+			<ui:insert name="body" />
+		</div>
+
+		<div class="footerTemplate"></div>
+	</div>
+</h:body>
+</html>

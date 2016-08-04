@@ -1,0 +1,128 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:aui-cc="http://liferay.com/faces/aui-cc"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="internalTemplate.xhtml">
+	<ui:define name="content">
+
+		<div class="spacer15"></div>
+		<h:form style="padding-bottom: 3px;" id="formAgregar">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{i18n['agregar-registro']}"></h:outputText>
+				</f:facet>
+
+				<aui-cc:messages globalOnly="false" layout="list" />
+
+				<h:panelGrid columns="2" width="100%"
+					columnClasses="columnLabelsDetalle,columnDatosDetalle">
+
+					<h:outputLabel value="#{i18n['ciudad']}"></h:outputLabel>
+					<h:selectOneMenu id="ciudadesSelect" required="true"
+						label="#{i18n['ciudad']}"
+						value="#{cadenaConexionBean.idCiudadSeleccionada}">
+						<f:selectItem itemLabel="#{i18n['seleccione']}" />
+						<f:selectItems value="#{cadenaConexionBean.ciudadesItems}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="#{i18n['direccion-ip']}"></h:outputLabel>
+					<h:inputText value="#{cadenaConexionBean.nuevoRegistro.ipBaseDatos}"
+						label="#{i18n['nombre']}" required="true" >
+						<f:validateLength maximum="20"></f:validateLength>
+					</h:inputText>
+
+					<h:outputLabel value="#{i18n['nombre-base-datos']}"></h:outputLabel>
+					<h:inputText value="#{cadenaConexionBean.nuevoRegistro.nombreBaseDatos}"
+						label="#{i18n['nombre-base-datos']}" required="true">
+						<f:validateLength maximum="50"></f:validateLength>	
+					</h:inputText>
+				
+					<h:outputLabel value="#{i18n['usuario']}"></h:outputLabel>
+					<h:inputText value="#{cadenaConexionBean.nuevoRegistro.usuarioBaseDatos}"
+						label="#{i18n['usuario']}" required="true" autocomplete="off">
+						<f:validateLength maximum="20"></f:validateLength>	
+					</h:inputText>
+						
+					<h:outputLabel value="#{i18n['password']}"></h:outputLabel>
+					<h:inputSecret id="pass" value="#{cadenaConexionBean.nuevoRegistro.contrasenaBaseDatos}"
+						label="#{i18n['password']}" required="true" autocomplete="off">
+						<f:validateLength maximum="20"></f:validateLength>	
+					</h:inputSecret>
+					
+					<h:outputLabel value="#{i18n['activo']}"></h:outputLabel>
+					<h:selectBooleanCheckbox value="#{cadenaConexionBean.nuevoRegistro.habilitado}"  required="true" label="#{i18n['activo']}"  />
+					
+					<h:outputLabel value="#{i18n['buscar-responsable']}"></h:outputLabel>
+					<h:inputText value="#{cadenaConexionBean.nuevoRegistro.mailResponsable}" validatorMessage="Formato de email invalido"
+						 required="true" label="#{i18n['buscar-responsable']}">
+					<!--	<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"  />-->
+ 	
+					</h:inputText>
+					
+					<h:outputLabel value="#{i18n['alcance']}"></h:outputLabel>
+					<h:selectOneMenu id="alcanceSelect" required="true"
+						label="#{i18n['alcance']}"
+						value="#{cadenaConexionBean.idAlcance}">
+						<f:selectItems value="#{cadenaConexionBean.alcanceItems}" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				
+				<div class="spacer15"></div>
+			<h:panelGrid id="probarCadenaConexion">
+				
+					<h:outputText value="#{i18n['conexion-error']}" styleClass="portlet-msg-error" rendered="#{!cadenaConexionBean.conexionexitosa and cadenaConexionBean.probarconexion}" />
+				
+					<h:outputText value="#{i18n['conexion-exitosa']}" styleClass="portlet-msg-info"  rendered="#{cadenaConexionBean.conexionexitosa and cadenaConexionBean.probarconexion}" />
+				
+					
+				</h:panelGrid>					
+					<a4j:commandButton value="#{i18n['probar-conexion']}"
+						action="#{cadenaConexionBean.probarCadenaConexionNuevo}"
+						execute="@form"
+						onbegin="#{rich:component('modalLoading')}.show();"
+						oncomplete="#{rich:component('modalLoading')}.hide();"
+						render="probarCadenaConexion" onclick="return valid(this);">
+					</a4j:commandButton>
+				
+
+				<div class="spacer15"></div>
+				<div align="center">
+
+					<h:panelGrid columns="2">
+						<h:commandButton action="#{cadenaConexionBean.crearRegistro}"
+							value="#{i18n['agregar-registro']}"
+							onclick="if (!confirm('#{i18n['corfim-agregar-registro']}')) return false">
+						</h:commandButton>
+
+						<h:commandButton immediate="true" value="#{i18n['limpiar']}" rendered="#{cadenaConexionBean.permittedToAdd}" 
+							action="agregar">
+						</h:commandButton>
+
+					</h:panelGrid>
+				</div>
+
+			</rich:panel>
+			<script type="text/javascript">
+			function valid(form) 
+			{ 				
+				var Value = form["formActualizar:pass"].value;
+				if (Value == "")
+				{
+					alert("Please enter Subject");
+					form["FormName:name"].focus();
+					return false;
+				}
+				form.submit();
+				return true;
+			}
+			</script>
+			
+			
+
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory name="">
+
+		
+		<mapping class="la.netco.configconsultaprocesos.persistence.dto.Ciudad" />
+		<mapping class="la.netco.configconsultaprocesos.persistence.dto.Entidad" />		
+		<mapping class="la.netco.configconsultaprocesos.persistence.dto.Especialidad" />		
+		<mapping class="la.netco.configconsultaprocesos.persistence.dto.EntidadEspecialidad" />
+		<mapping class="la.netco.configconsultaprocesos.persistence.dto.CadenaConexion" />		
+		<mapping class="la.netco.configconsultaprocesos.persistence.dto.CadenaUsuario" />
+		<mapping class="la.netco.configconsultaprocesos.persistence.dto.Alcance" />
+		<mapping class="la.netco.configconsultaprocesos.persistence.dto.RepositorioDoc" />
+	</session-factory>
+</hibernate-configuration>
