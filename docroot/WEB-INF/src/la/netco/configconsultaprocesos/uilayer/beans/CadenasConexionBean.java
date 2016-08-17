@@ -46,6 +46,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.usersadmin.util.UsersAdminUtil;
 import com.liferay.util.bridges.jsf.common.FacesMessageUtil;
 import com.liferay.util.bridges.jsf.common.JSFPortletUtil;
+import com.sun.faces.facelets.tag.jstl.core.SetHandler;
 
 @ManagedBean(name = "cadenaConexionBean")
 @ViewScoped
@@ -56,6 +57,7 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 	private List<SelectItem> ciudadesItems;
 	private List<SelectItem> alcanceItems;
 	private String idCiudadSeleccionada;
+	private String idOrganizacion;
 	private String idAlcance;
 	private String direccionIP;
 		
@@ -75,6 +77,7 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 	private String resSeleccionado;
 	
 	private boolean conexionexitosa;
+	private boolean esadmin;
 	private boolean probarconexion = false;
 
 	public static String RESOURCE =  "la.netco.configconsultaprocesos.cadenaconexion";
@@ -206,7 +209,9 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 	public String  crearRegistro() {
 		String page =null;
 		try {
-
+			System.out.println("Inicia Probando Conexion");
+			probarCadenaConexionNuevo();
+			System.out.println("Valor de Habilitado: "+nuevoRegistro.getHabilitado());
 			nuevoRegistro.setAlcance(serviceDao.getAlcanceDao().read(idAlcance));
 			nuevoRegistro.setCiudad(serviceDao.getCiudadDao().read(idCiudadSeleccionada));
 			System.out.println("Marcela 2 ");
@@ -240,6 +245,7 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 			FacesMessageUtil.info(FacesContext.getCurrentInstance(), Constants.OPERACION_EXITOSA);
 			
 			page = "transaccionExitosa";
+			System.out.println("Valor de Habilitado: "+nuevoRegistro.getHabilitado());
 			nuevoRegistro = new CadenaConexion();
 		} catch (Exception e) {
 			System.out.println("errocito "+e);
@@ -255,7 +261,9 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 		try {
 			
 			boolean flg=false;
-			
+			System.out.println("Inicia Probando Conexion(Actualizar)");
+			probarCadenaConexionActualizar();
+			System.out.println("Valor de Habilitado: "+registroSelecionado.getHabilitado());
 			registroSelecionado.setCiudad(serviceDao.getCiudadDao().read(idCiudadSeleccionada));
 			registroSelecionado.setAlcance(serviceDao.getAlcanceDao().read(idAlcance));
 			String code=serviceDao.getCiudadDao().read(idCiudadSeleccionada).getOrganizacion();
@@ -315,45 +323,49 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
     	Map<String, String> alias = new HashMap<String, String>();
 		
     	boolean hasUpdateAll = PermissionCheckerUtil.getPermittedToUpdate(RESOURCE, "UPDATE_ALL");
-    	
-    	if(!hasUpdateAll){
-    	
-    		filtros.add(Restrictions.eq("res.compositePK.id_usuario", PermissionCheckerUtil.getCurrentUserId()));    	
-    		alias.put("responsables", "res");	
-    	}
-    	
-    	if(direccionIP != null  && !direccionIP.trim().equals("") ){    		
-    		Criterion nombre = Restrictions.eq("ipBaseDatos",  direccionIP);
-			filtros.add(nombre);
-    	}
-    	
-    	System.out.println("valor de ciudad al filtrar"+idCiudadSeleccionada);
-    	if(idCiudadSeleccionada!= null  && !idCiudadSeleccionada.equals("")  ){
-    		filtros.add(Restrictions.eq("ciudad.codigo", idCiudadSeleccionada));    	
-    	}else{ 
-    		
-    		
-    		try {
-//    			String filt[] = new String[getCiudadesItems().size()];
-//    			int i=0;
-    			Disjunction disjunction=Restrictions.disjunction();
-				for(SelectItem e : getCiudadesItems()){
-//					filt[i]= e.getValue().toString();
-					disjunction.add(Restrictions.eq("ciudad.codigo", e.getValue().toString()));
-//					i++;
-				}
-				filtros.add(disjunction);
-//				filtros.add(Restrictions.eq("ciudad.codigo", filt));
+    	int tamanho = 0;
+    	try {
+    		tamanho = getCiudadesItems().size();
+		} catch (SystemException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			System.out.println("Error: "+e1.getMessage());
+		}
+    	if(tamanho > 0)
+    	{
+	    	if(!hasUpdateAll){
+	    		filtros.add(Restrictions.eq("res.compositePK.id_usuario", PermissionCheckerUtil.getCurrentUserId()));    	
+	    		alias.put("responsables", "res");	
+	    	}    	
+	    	try {
+					if(direccionIP != null  && !direccionIP.trim().equals("") ){    		
+						Criterion nombre = Restrictions.eq("ipBaseDatos",  direccionIP);
+						filtros.add(nombre);
+					}    	
+					System.out.println("valor de ciudad al filtrar"+idCiudadSeleccionada);
+					if(idCiudadSeleccionada!= null  && !idCiudadSeleccionada.equals("")  ){
+						if(!getCiudadesItems().isEmpty())
+							filtros.add(Restrictions.eq("ciudad.codigo", idCiudadSeleccionada));    	
+					}else{ 
+						try {
+							Disjunction disjunction=Restrictions.disjunction();
+							for(SelectItem e : getCiudadesItems()){
+								disjunction.add(Restrictions.eq("ciudad.codigo", e.getValue().toString()));
+							}
+							filtros.add(disjunction);
+						} catch (SystemException e) {
+							e.printStackTrace();
+						}
+					}
 			} catch (SystemException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-    		
+	
+			listDataModel = new CadenaConexionDataModel();    
+	    	listDataModel.setAlias(alias);
+	    	listDataModel.setFiltros(filtros);
     	}
-    	
-    	listDataModel = new CadenaConexionDataModel();    
-    	listDataModel.setAlias(alias);
-    	listDataModel.setFiltros(filtros);
     	return "listado";
     }
 	
@@ -375,8 +387,7 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 		
 		if (ciudadesItems == null) {
 			try {
-				List<Ciudad> allCiudades = serviceDao.getCiudadDao().loadAll(
-						Ciudad.class);
+				List<Ciudad> allCiudades = serviceDao.getCiudadDao().loadAll(Ciudad.class);
 				Collections.sort(allCiudades, new Comparator<Ciudad>(){
 					 
 					@Override
@@ -393,13 +404,17 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 					}else{					
 						long organizacion[];
 						organizacion=themeDisplay.getUser().getOrganizationIds();
-						System.out.println(ciudad.getOrganizacion());
-						for(Long orga : organizacion){
-							if(ciudad.getOrganizacion().equals(orga.toString())){
-								ciudadesItems.add(new SelectItem(ciudad.getCodigo(), ciudad
-								.getNombre()));
+							for(Long orga : organizacion){
+								System.out.println("ID ORGA: "+orga.toString());
+								if(orga.toString() != null)
+								{
+									if(ciudad.getOrganizacion().equals(orga.toString())){
+										ciudadesItems.add(new SelectItem(ciudad.getCodigo(), ciudad.getNombre()));
+										idOrganizacion = orga.toString();
+										System.out.println("ID ORGA: "+idOrganizacion);
+									}
+								}								
 							}
-						}
 					}
 				}
 
@@ -431,7 +446,7 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 
 		return alcanceItems;
 	}
-	public String limpiar(){
+	public String limpiar() throws SystemException{
 		idCiudadSeleccionada=null;
 		direccionIP=null;
 		
@@ -445,6 +460,7 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 			if(nuevoRegistro == null || nuevoRegistro.getContrasenaBaseDatos() == null || nuevoRegistro.getContrasenaBaseDatos().trim().equals("")){
 				setConexionexitosa(false);
 				setProbarconexion(true);	
+				nuevoRegistro.setHabilitado(false);
 				return;
 			}
 			System.out.println("probar2");
@@ -452,6 +468,7 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 			stringConnection.append("jdbc:jtds:sqlserver://" + nuevoRegistro.getIpBaseDatos().trim());
 			stringConnection.append("/" + nuevoRegistro.getNombreBaseDatos().trim());		
 			setConexionexitosa(CadenaConexionUtil.testJTDSConnection(stringConnection.toString(), nuevoRegistro.getUsuarioBaseDatos().trim(), nuevoRegistro.getContrasenaBaseDatos().trim()));
+			nuevoRegistro.setHabilitado(CadenaConexionUtil.testJTDSConnection(stringConnection.toString(), nuevoRegistro.getUsuarioBaseDatos().trim(), nuevoRegistro.getContrasenaBaseDatos().trim()));
 			setProbarconexion(true);	
 			System.out.println("probar3");
 		} catch (Exception e) {
@@ -477,13 +494,15 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 		
 			
 			setConexionexitosa(CadenaConexionUtil.testJTDSConnection(stringConnection.toString(), registroSelecionado.getUsuarioBaseDatos().trim(), registroSelecionado.getContrasenaBaseDatos().trim()));
+			registroSelecionado.setHabilitado(CadenaConexionUtil.testJTDSConnection(stringConnection.toString(), registroSelecionado.getUsuarioBaseDatos().trim(), registroSelecionado.getContrasenaBaseDatos().trim()));
 			setProbarconexion(true);	
 		} catch (Exception e) {			
 			e.printStackTrace();
 		}
 	
 	}
-
+	
+	
 	public String getIdCiudadSeleccionada() {
 		return idCiudadSeleccionada;
 	}
@@ -599,7 +618,46 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 	}
 	
 	public void setIdAlcance(String idAlcance) {
+		
 		this.idAlcance = idAlcance;
 	}
+
+
+	public boolean isEsadmin() throws SystemException {
+		esadmin = false;
+		FacesContext context = FacesContext.getCurrentInstance();
+		PortletRequest portletRequest = (PortletRequest) context.getExternalContext().getRequest();
+		ThemeDisplay  themeDisplay = (ThemeDisplay) portletRequest.getAttribute(WebKeys.THEME_DISPLAY);
+		long roles[];
+		roles=themeDisplay.getUser().getRoleIds();
+		for(Long rol : roles){
+			if(rol==10209)
+			{
+				esadmin = true;
+				setEsadmin(true);				
+			}
+		}
+		
+		return esadmin;
+	}
+
+
+	public void setEsadmin(boolean esadmin) {
+		this.esadmin = esadmin;
+	}
+
+
+	public String getIdOrganizacion() {
+		return idOrganizacion;
+	}
+
+
+	public void setIdOrganizacion(String idOrganizacion) {
+		this.idOrganizacion = idOrganizacion;
+	}
+	
+	
+	
+	
 
 }

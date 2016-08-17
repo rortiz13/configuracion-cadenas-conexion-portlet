@@ -93,7 +93,7 @@
 						<h:panelGrid columns="2">
 							<h:commandLink style="color: #FFFFFF;" action="actualizar" rendered="#{cadenaConexionBean.permittedToUpdate}"  >
 								<h:graphicImage alt="#{i18n['actualizar']}"
-									title="#{i18n['actualizar']}"
+									title="#{i18n['actualizar']}"									
 									url="#{liferay.themeImagesURL}/common/edit.png"></h:graphicImage>
 								<f:param name="idRegSeleccionado" value="#{dato.id}" />
 							</h:commandLink>
@@ -101,6 +101,7 @@
 								action="eliminar" rendered="#{cadenaConexionBean.permittedToDelete}" >
 								<h:graphicImage alt="#{i18n['eliminar']}"
 									title="#{i18n['eliminar']}" 
+									rendered="#{cadenaConexionBean.esadmin}"
 									url="#{liferay.themeImagesURL}/common/delete.png"></h:graphicImage>
 								<f:param name="idRegSeleccionado" value="#{dato.id}" />
 							</h:commandLink>

@@ -118,48 +118,60 @@ public class DocumentosBean extends BaseBean implements Serializable{
 		}
 	}
 	public String cargaFiltrosDataModel(){
+		int tamanho = 0;
+    	try {
+    		tamanho = getCiudadesItems().size();
+		} catch (SystemException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			System.out.println("Error: "+e1.getMessage());
+		}
+    	
 		try{
 			System.out.println("cargar filtros");
 			List<Criterion> filtros = new ArrayList<Criterion>();	    
 	    	Map<String, String> alias = new HashMap<String, String>();		
+	    	if(tamanho > 0)
+	    	{
+		    	if(ipPrivada!= null  && !ipPrivada.trim().equals("") ){    		
+		    		Criterion ipPrivadas = Restrictions.eq("ipPrivada",  ipPrivada);
+					filtros.add(ipPrivadas);
+		    	}
+		    	
+		    	if(dominio!= null  && !dominio.trim().equals("") ){    		
+		    		Criterion ipPrivada = Restrictions.eq("dominio",  dominio);
+					filtros.add(ipPrivada);    		
+		    	}	    	
+		    	if(idCiudadSeleccionada!= null  && !idCiudadSeleccionada.equals("")  ){
+		    		filtros.add(Restrictions.eq("ciudad.codigo", idCiudadSeleccionada));    	
+		    	}
+	//	    	else{ 
+	//	    		
+	//	    		
+	//	    		try {
+	////	    			String filt[] = new String[getCiudadesItems().size()];
+	////	    			int i=0;
+	//	    			Disjunction disjunction=Restrictions.disjunction();
+	//					for(SelectItem e : getCiudadesItems()){
+	////						filt[i]= e.getValue().toString();
+	//						disjunction.add(Restrictions.eq("ciudad.codigo", e.getValue().toString()));
+	////						i++;
+	//					}
+	//					filtros.add(disjunction);
+	////					filtros.add(Restrictions.eq("ciudad.codigo", filt));
+	//				} catch (SystemException e) {
+	//					System.out.println("error al cargar listado de documentos"+e);
+	//					// TODO Auto-generated catch block
+	//					e.printStackTrace();
+	//				}
+	//	    		
+	//	    	}
 	    	
-	    	if(ipPrivada!= null  && !ipPrivada.trim().equals("") ){    		
-	    		Criterion ipPrivadas = Restrictions.eq("ipPrivada",  ipPrivada);
-				filtros.add(ipPrivadas);
+	    		listDataModel = new DocumentosDataModel();    
+		    	listDataModel.setAlias(alias);
+		    	listDataModel.setFiltros(filtros);
 	    	}
 	    	
-	    	if(dominio!= null  && !dominio.trim().equals("") ){    		
-	    		Criterion ipPrivada = Restrictions.eq("dominio",  dominio);
-				filtros.add(ipPrivada);    		
-	    	}	    	
-	    	if(idCiudadSeleccionada!= null  && !idCiudadSeleccionada.equals("")  ){
-	    		filtros.add(Restrictions.eq("ciudad.codigo", idCiudadSeleccionada));    	
-	    	}
-//	    	else{ 
-//	    		
-//	    		
-//	    		try {
-////	    			String filt[] = new String[getCiudadesItems().size()];
-////	    			int i=0;
-//	    			Disjunction disjunction=Restrictions.disjunction();
-//					for(SelectItem e : getCiudadesItems()){
-////						filt[i]= e.getValue().toString();
-//						disjunction.add(Restrictions.eq("ciudad.codigo", e.getValue().toString()));
-////						i++;
-//					}
-//					filtros.add(disjunction);
-////					filtros.add(Restrictions.eq("ciudad.codigo", filt));
-//				} catch (SystemException e) {
-//					System.out.println("error al cargar listado de documentos"+e);
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//	    		
-//	    	}
-	    	
-	    	listDataModel = new DocumentosDataModel();    
-	    	listDataModel.setAlias(alias);
-	    	listDataModel.setFiltros(filtros);
 	    	return "listado";
 		}catch(Exception e){
 			System.out.println("error "+e);

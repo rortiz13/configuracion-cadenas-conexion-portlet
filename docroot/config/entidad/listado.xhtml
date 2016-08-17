@@ -121,6 +121,7 @@
 								action="eliminar" rendered="#{entidadesBean.permittedToDelete}" >
 								<h:graphicImage alt="#{i18n['eliminar']}"
 									title="#{i18n['eliminar']}"
+									rendered="#{cadenaConexionBean.esadmin}"
 									url="#{liferay.themeImagesURL}/common/delete.png"></h:graphicImage>
 								<f:param name="idRegSeleccionado" value="#{dato.id}" />
 							</h:commandLink>

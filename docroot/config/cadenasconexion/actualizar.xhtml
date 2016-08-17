@@ -61,13 +61,11 @@
 					<h:inputSecret id="pass" value="#{cadenaConexionBean.registroSelecionado.contrasenaBaseDatos}"
 						label="#{i18n['password']}" required="true" autocomplete="off">
 						<f:validateLength maximum="20"></f:validateLength>	
-					</h:inputSecret>
+					</h:inputSecret>		
 					
-					<h:outputLabel value="#{i18n['activo']}"></h:outputLabel>
-					<h:selectBooleanCheckbox value="#{cadenaConexionBean.registroSelecionado.habilitado}"   required="true" label="#{i18n['activo']}"  />
 					
 					<h:outputLabel value="#{i18n['buscar-responsable']}"></h:outputLabel>
-					<h:inputText value="#{cadenaConexionBean.registroSelecionado.mailResponsable}" validatorMessage="Formato de email invalido"
+					<h:inputText disabled="true" value="#{cadenaConexionBean.registroSelecionado.mailResponsable}" validatorMessage="Formato de email invalido"
 						 required="true" label="#{i18n['buscar-responsable']}">
 						<!--<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />-->
  	

@@ -207,46 +207,58 @@ public class EntidadesBean extends BaseBean implements Serializable{
 	}
 	
 	public String cargaFiltrosDataModel(){
+		
     	List<Criterion> filtros = new ArrayList<Criterion>();
-    
-    	if(nombrePersonalizado != null  && !nombrePersonalizado.trim().equals("") ){    		
-    		Criterion nombre = Restrictions.ilike("nombre", "%" + nombrePersonalizado + "%");
-			filtros.add(nombre);
-    	}
-    	
-    	   	    	
-    	if(idEntidadSeleccionada != null  && !idEntidadSeleccionada.equals("")  ){
-    		filtros.add(Restrictions.eq("entidad.codigo", idEntidadSeleccionada));    	
-    	}
-    	
-   	   	if(idEspecialidadSeleccionada != null && !idEspecialidadSeleccionada.equals("")  ){
-    		filtros.add(Restrictions.eq("especialidad.codigo", idEspecialidadSeleccionada));
-    	}
-   		if(idCiudadSeleccionada!= null  && !idCiudadSeleccionada.equals("")  ){
-    		filtros.add(Restrictions.eq("ciudad.codigo", idCiudadSeleccionada));    	
-    	}else{ 
-    		
-    		
-    		try {
-//    			String filt[] = new String[getCiudadesItems().size()];
-//    			int i=0;
-    			Disjunction disjunction=Restrictions.disjunction();
-				for(SelectItem e : getCiudadesItems()){
-//					filt[i]= e.getValue().toString();
-					disjunction.add(Restrictions.eq("ciudad.codigo", e.getValue().toString()));
-//					i++;
+    	int tamanho = 0;
+    	try {
+    		tamanho = getCiudadesItems().size();
+		} catch (SystemException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			System.out.println("Error: "+e1.getMessage());
+		}
+    	if(tamanho > 0)
+    	{
+	    	if(nombrePersonalizado != null  && !nombrePersonalizado.trim().equals("") ){    		
+	    		Criterion nombre = Restrictions.ilike("nombre", "%" + nombrePersonalizado + "%");
+				filtros.add(nombre);
+	    	}
+	    	
+	    	   	    	
+	    	if(idEntidadSeleccionada != null  && !idEntidadSeleccionada.equals("")  ){
+	    		filtros.add(Restrictions.eq("entidad.codigo", idEntidadSeleccionada));    	
+	    	}
+	    	
+	   	   	if(idEspecialidadSeleccionada != null && !idEspecialidadSeleccionada.equals("")  ){
+	    		filtros.add(Restrictions.eq("especialidad.codigo", idEspecialidadSeleccionada));
+	    	}
+	   		if(idCiudadSeleccionada!= null  && !idCiudadSeleccionada.equals("")  ){
+	    		filtros.add(Restrictions.eq("ciudad.codigo", idCiudadSeleccionada));    	
+	    	}else{ 
+	    		
+	    		
+	    		try {
+	//    			String filt[] = new String[getCiudadesItems().size()];
+	//    			int i=0;
+	    			Disjunction disjunction=Restrictions.disjunction();
+					for(SelectItem e : getCiudadesItems()){
+	//					filt[i]= e.getValue().toString();
+						disjunction.add(Restrictions.eq("ciudad.codigo", e.getValue().toString()));
+	//					i++;
+					}
+					filtros.add(disjunction);
+	//				filtros.add(Restrictions.eq("ciudad.codigo", filt));
+				} catch (SystemException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				filtros.add(disjunction);
-//				filtros.add(Restrictions.eq("ciudad.codigo", filt));
-			} catch (SystemException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    		
+	    		
+	    	}
+	   	   	
+	   	   	estidadesDataModel = new EntidadEspecialidadDataModel();    	
+	    	estidadesDataModel.setFiltros(filtros);
     	}
-   	   	
-   	   	estidadesDataModel = new EntidadEspecialidadDataModel();    	
-    	estidadesDataModel.setFiltros(filtros);
+    	
     	return "";
     }
 	
