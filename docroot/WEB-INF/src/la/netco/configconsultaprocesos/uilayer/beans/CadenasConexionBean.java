@@ -20,6 +20,7 @@ import javax.portlet.PortletRequest;
 import la.netco.configconsultaprocesos.persistence.dto.Alcance;
 import la.netco.configconsultaprocesos.persistence.dto.CadenaConexion;
 import la.netco.configconsultaprocesos.persistence.dto.Ciudad;
+import la.netco.configconsultaprocesos.persistence.dto.UsuarioCiudad;
 import la.netco.configconsultaprocesos.persistence.dto.custom.Responsable;
 import la.netco.configconsultaprocesos.services.ServiceDao;
 import la.netco.configconsultaprocesos.uilayer.beans.datamodels.GenericDataModel;
@@ -46,7 +47,6 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.usersadmin.util.UsersAdminUtil;
 import com.liferay.util.bridges.jsf.common.FacesMessageUtil;
 import com.liferay.util.bridges.jsf.common.JSFPortletUtil;
-import com.sun.faces.facelets.tag.jstl.core.SetHandler;
 
 @ManagedBean(name = "cadenaConexionBean")
 @ViewScoped
@@ -215,9 +215,6 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 			nuevoRegistro.setAlcance(serviceDao.getAlcanceDao().read(idAlcance));
 			nuevoRegistro.setCiudad(serviceDao.getCiudadDao().read(idCiudadSeleccionada));
 			System.out.println("Marcela 2 ");
-			String code=serviceDao.getCiudadDao().read(idCiudadSeleccionada).getOrganizacion();
-			System.out.println("Marcela 3 "+code);
-			
 			
 			StringBuffer dataSource = new StringBuffer();
 			dataSource.append("Data Source=" + nuevoRegistro.getIpBaseDatos().trim());
@@ -265,12 +262,7 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 			probarCadenaConexionActualizar();
 			System.out.println("Valor de Habilitado: "+registroSelecionado.getHabilitado());
 			registroSelecionado.setCiudad(serviceDao.getCiudadDao().read(idCiudadSeleccionada));
-			registroSelecionado.setAlcance(serviceDao.getAlcanceDao().read(idAlcance));
-			String code=serviceDao.getCiudadDao().read(idCiudadSeleccionada).getOrganizacion();
-			System.out.println("Marcela  "+code);
-			
-			
-			
+			registroSelecionado.setAlcance(serviceDao.getAlcanceDao().read(idAlcance));	
 			StringBuffer dataSource = new StringBuffer();
 			dataSource.append("Data Source=" + registroSelecionado.getIpBaseDatos().trim());
 			dataSource.append(";Initial Catalog=" + registroSelecionado.getNombreBaseDatos().trim());		
@@ -300,8 +292,6 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 		try {
 			
 			registroSelecionado.setCiudad(serviceDao.getCiudadDao().read(idCiudadSeleccionada));
-			String code=serviceDao.getCiudadDao().read(idCiudadSeleccionada).getOrganizacion();
-		
 			registroSelecionado = serviceDao.getCadenaConexionDao().read(idRegSeleccionado);
 			serviceDao.getCadenaConexionDao().delete(registroSelecionado);
 			
@@ -370,24 +360,25 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
     }
 	
 	public List<SelectItem> getCiudadesItems() throws SystemException {
+		System.out.println("Entro en getCiudadesItem");
 		FacesContext context = FacesContext.getCurrentInstance();
 		PortletRequest portletRequest = (PortletRequest) context.getExternalContext().getRequest();
 
 		ThemeDisplay  themeDisplay = (ThemeDisplay) portletRequest.getAttribute(WebKeys.THEME_DISPLAY);
-		long roles[];
+		long roles[], userID;
 		roles=themeDisplay.getUser().getRoleIds();
+		userID = themeDisplay.getUser().getUserId();
 		boolean flg=false;
 		for(Long rol : roles){
-//			System.out.println("rol "+rol);
 			if(rol==10209){
-				flg=true;
-				
-			}
+				flg=true;			}
 		}
 		
 		if (ciudadesItems == null) {
 			try {
+				
 				List<Ciudad> allCiudades = serviceDao.getCiudadDao().loadAll(Ciudad.class);
+				System.out.println("Es vacia "+allCiudades.isEmpty());
 				Collections.sort(allCiudades, new Comparator<Ciudad>(){
 					 
 					@Override
@@ -397,24 +388,26 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 					
 				});
 				ciudadesItems = new ArrayList<SelectItem>();
+		
 				for (Ciudad ciudad : allCiudades) {
 					if(flg){
-						ciudadesItems.add(new SelectItem(ciudad.getCodigo(), ciudad
-								.getNombre()));
-					}else{					
-						long organizacion[];
-						organizacion=themeDisplay.getUser().getOrganizationIds();
-							for(Long orga : organizacion){
-								System.out.println("ID ORGA: "+orga.toString());
-								if(orga.toString() != null)
-								{
-									if(ciudad.getOrganizacion().equals(orga.toString())){
+						ciudadesItems.add(new SelectItem(ciudad.getCodigo(), ciudad.getNombre()));
+					}else{	
+						try{
+							List<UsuarioCiudad> allUsuarioCiudad = serviceDao.getUsuarioCiudadDao().loadAll(UsuarioCiudad.class);
+							System.out.println("TAMA: "+allUsuarioCiudad.size());
+							for(UsuarioCiudad usuciud: allUsuarioCiudad)
+							{			
+								System.out.println(usuciud.getCiudad()+" - "+usuciud.getUserid());
+								if((usuciud.getUserid().trim()).equals(String.valueOf(userID).trim())){
+									if(usuciud.getCiudad().equals(ciudad.getDepartamento())){
 										ciudadesItems.add(new SelectItem(ciudad.getCodigo(), ciudad.getNombre()));
-										idOrganizacion = orga.toString();
-										System.out.println("ID ORGA: "+idOrganizacion);
 									}
-								}								
+								}
 							}
+						}catch (Exception e) {
+							System.out.println(e.getMessage());
+						}						
 					}
 				}
 
@@ -431,9 +424,7 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 	public List<SelectItem> getAlcanceItems() throws SystemException {
 		
 			try {
-				List<Alcance> allAlcance = serviceDao.getAlcanceDao().loadAll(
-						Alcance.class);
-				
+				List<Alcance> allAlcance = serviceDao.getAlcanceDao().loadAll(Alcance.class);				
 				alcanceItems = new ArrayList<SelectItem>();
 				for (Alcance alcance : allAlcance) {					
 					alcanceItems.add(new SelectItem(alcance.getCodigo(), alcance.getNombre()));

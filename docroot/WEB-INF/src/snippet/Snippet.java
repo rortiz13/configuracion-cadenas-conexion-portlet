@@ -1,6 +1,6 @@
 package snippet;
 
 public class Snippet {
-	ajax update="auth" 
+	//ajax update="auth" 
 }
 

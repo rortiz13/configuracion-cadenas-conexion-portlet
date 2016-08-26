@@ -9,6 +9,7 @@ import la.netco.configconsultaprocesos.persistence.dto.Entidad;
 import la.netco.configconsultaprocesos.persistence.dto.EntidadEspecialidad;
 import la.netco.configconsultaprocesos.persistence.dto.Especialidad;
 import la.netco.configconsultaprocesos.persistence.dto.RepositorioDoc;
+import la.netco.configconsultaprocesos.persistence.dto.UsuarioCiudad;
 import la.netco.configconsultaprocesos.services.dao.GenericDao;
 
 public interface ServiceDao {
@@ -22,4 +23,5 @@ public interface ServiceDao {
 	public GenericDao<EntidadEspecialidad, Integer> getEntidadEspecialidadDao();
 	public GenericDao<CadenaConexion, Integer> getCadenaConexionDao() ;
 	public GenericDao<CadenaUsuario, CadenaUsuarioPK> getCadenaUsuarioDao();
+	public GenericDao<UsuarioCiudad, String> getUsuarioCiudadDao();
 }

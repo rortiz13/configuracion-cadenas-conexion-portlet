@@ -13,5 +13,6 @@
 		<mapping class="la.netco.configconsultaprocesos.persistence.dto.CadenaUsuario" />
 		<mapping class="la.netco.configconsultaprocesos.persistence.dto.Alcance" />
 		<mapping class="la.netco.configconsultaprocesos.persistence.dto.RepositorioDoc" />
+		<mapping class="la.netco.configconsultaprocesos.persistence.dto.UsuarioCiudad" />
 	</session-factory>
 </hibernate-configuration>

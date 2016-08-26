@@ -11,6 +11,7 @@ import la.netco.configconsultaprocesos.persistence.dto.Entidad;
 import la.netco.configconsultaprocesos.persistence.dto.EntidadEspecialidad;
 import la.netco.configconsultaprocesos.persistence.dto.Especialidad;
 import la.netco.configconsultaprocesos.persistence.dto.RepositorioDoc;
+import la.netco.configconsultaprocesos.persistence.dto.UsuarioCiudad;
 import la.netco.configconsultaprocesos.services.ServiceDao;
 import la.netco.configconsultaprocesos.services.dao.GenericDao;
 
@@ -29,6 +30,7 @@ public class ServiceDaoImpl implements ServiceDao {
 	private GenericDao<CadenaUsuario, CadenaUsuarioPK> cadenaUsuarioDao;
 	private GenericDao<Alcance, String> alcanceDao;
 	private GenericDao<RepositorioDoc, Integer> repositorioDocDao;
+	private GenericDao<UsuarioCiudad, String> usuariociudadDao;
 	@Autowired
 	@Resource(name="genericDao")
 	public void setGenericCommonDao(GenericDao<?, ?> genericCommonDao) {
@@ -99,6 +101,14 @@ public class ServiceDaoImpl implements ServiceDao {
 		repositorioDocDao = (GenericDao<RepositorioDoc, Integer> )genericCommonDao;
 		repositorioDocDao.setType(RepositorioDoc.class);
 		return repositorioDocDao;
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public GenericDao<UsuarioCiudad, String> getUsuarioCiudadDao() {
+		usuariociudadDao  = (GenericDao<UsuarioCiudad, String> )genericCommonDao;		
+		usuariociudadDao.setType(UsuarioCiudad.class);
+		return usuariociudadDao;
 	}
 
 	

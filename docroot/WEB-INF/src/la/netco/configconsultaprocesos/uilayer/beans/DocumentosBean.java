@@ -366,20 +366,20 @@ public class DocumentosBean extends BaseBean implements Serializable{
 				});
 				ciudadesItems = new ArrayList<SelectItem>();
 				for (Ciudad ciudad : allCiudades) {
-					if(flg){
+//					if(flg){
 						ciudadesItems.add(new SelectItem(ciudad.getCodigo(), ciudad
 								.getNombre()));
-					}else{					
-						long organizacion[];
-						organizacion=themeDisplay.getUser().getOrganizationIds();
-						System.out.println(ciudad.getOrganizacion());
-						for(Long orga : organizacion){
-							if(ciudad.getOrganizacion().equals(orga.toString())){
-								ciudadesItems.add(new SelectItem(ciudad.getCodigo(), ciudad
-								.getNombre()));
-							}
-						}
-					}
+//					}else{					
+//						long organizacion[];
+//						organizacion=themeDisplay.getUser().getOrganizationIds();
+//						
+//						for(Long orga : organizacion){
+//							if(ciudad.getOrganizacion().equals(orga.toString())){
+//								ciudadesItems.add(new SelectItem(ciudad.getCodigo(), ciudad
+//								.getNombre()));
+//							}
+//						}
+//					}
 				}
 
 			} catch (Exception e) {

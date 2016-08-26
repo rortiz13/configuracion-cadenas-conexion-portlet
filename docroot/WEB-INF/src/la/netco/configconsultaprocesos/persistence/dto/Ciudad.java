@@ -9,15 +9,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "T065BACIUDGENE")
-//@NamedQuery(name = Ciudad.NAMED_QUERY_GET_ALL_CIUDAD_BY_DEPT, query=Ciudad.QUERY_GET_ALL_CIUDAD_BY_DEPT)
 public class Ciudad implements Serializable  {
 
 
 	private static final long serialVersionUID = 1L;
 	private String codigo;
 	private String nombre;
-	private String organizacion;
-		
+	private String Departamento;	
 	@Id
 	@Column(name = "A065CODICIUD")
 	public String getCodigo() {
@@ -37,18 +35,16 @@ public class Ciudad implements Serializable  {
 		this.nombre = nombre;
 	}	
 	
-	@Column(name = "A065CODIORG")
-	public String getOrganizacion() {
-		return organizacion;
+	@Column(name = "DEPARTAMENTO")	
+	public String getDepartamento() {
+		return Departamento;
 	}
 
-	public void setOrganizacion(String organizacion) {
-		this.organizacion = organizacion;
+	public void setDepartamento(String departamento) {
+		Departamento = departamento;
 	}
-
-
 
 	public static final String NAMED_QUERY_GET_ALL_CIUDAD_BY_DEPT  = "getAllCiudadesByDept";
-	public static final String QUERY_GET_ALL_CIUDAD_BY_DEPT 		= "FROM Ciudad ciudad WHERE ciudad.departamento.id_dept = ? order by  ciudad.nombre_mcpio asc";
+	public static final String QUERY_GET_ALL_CIUDAD_BY_DEPT = "FROM Ciudad ciudad WHERE ciudad.departamento.id_dept = ? order by  ciudad.nombre_mcpio asc";
 	
 }
