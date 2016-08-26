@@ -22,7 +22,6 @@ import la.netco.configconsultaprocesos.services.ServiceDao;
 import la.netco.configconsultaprocesos.uilayer.beans.datamodels.GenericDataModel;
 
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -103,9 +102,22 @@ public class DocumentosBean extends BaseBean implements Serializable{
 	
 	@PostConstruct
 	public void init(){
-		nuevoRegistro = new RepositorioDoc();
-		cargaFiltrosDataModel();
-		flg=false;
+		FacesContext context = FacesContext.getCurrentInstance();
+		PortletRequest portletRequest = (PortletRequest) context.getExternalContext().getRequest();
+		ThemeDisplay  themeDisplay = (ThemeDisplay) portletRequest.getAttribute(WebKeys.THEME_DISPLAY);
+		long _roles[];
+		try {
+			_roles=themeDisplay.getUser().getRoleIds();
+			for(Long rol : _roles){				
+				if(rol == 10209){
+					nuevoRegistro = new RepositorioDoc();
+					cargaFiltrosDataModel();
+				}
+			}
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 	
 	public void changeflg(){

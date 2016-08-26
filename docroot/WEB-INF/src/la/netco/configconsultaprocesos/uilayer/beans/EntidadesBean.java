@@ -22,6 +22,7 @@ import la.netco.configconsultaprocesos.persistence.dto.Entidad;
 import la.netco.configconsultaprocesos.persistence.dto.EntidadEspecialidad;
 import la.netco.configconsultaprocesos.persistence.dto.Especialidad;
 import la.netco.configconsultaprocesos.persistence.dto.RepositorioDoc;
+import la.netco.configconsultaprocesos.persistence.dto.UsuarioCiudad;
 import la.netco.configconsultaprocesos.services.ServiceDao;
 import la.netco.configconsultaprocesos.uilayer.beans.datamodels.GenericDataModel;
 
@@ -106,9 +107,7 @@ public class EntidadesBean extends BaseBean implements Serializable{
 			   
 			   
 			     if(idRegSeleccionado != null) this.idRegSeleccionado = Integer.parseInt(idRegSeleccionado);
-			     
-			     
-			     
+ 
 			}
 				
 			if((registroSelecionado == null || registroSelecionado.getId() == null)&&  (idRegSeleccionado != null && !idRegSeleccionado.equals(""))){
@@ -265,10 +264,10 @@ public class EntidadesBean extends BaseBean implements Serializable{
 	public List<SelectItem> getCiudadesItems() throws SystemException {
 		FacesContext context = FacesContext.getCurrentInstance();
 		PortletRequest portletRequest = (PortletRequest) context.getExternalContext().getRequest();
-
 		ThemeDisplay  themeDisplay = (ThemeDisplay) portletRequest.getAttribute(WebKeys.THEME_DISPLAY);
-		long roles[];
+		long roles[], userID;
 		roles=themeDisplay.getUser().getRoleIds();
+		userID = themeDisplay.getUser().getUserId();
 		boolean flg=false;
 		for(Long rol : roles){
 			
@@ -292,19 +291,24 @@ public class EntidadesBean extends BaseBean implements Serializable{
 				});
 				ciudadesItems = new ArrayList<SelectItem>();
 				for (Ciudad ciudad : allCiudades) {
-//					if(flg){
+					if(flg){
 						ciudadesItems.add(new SelectItem(ciudad.getCodigo(), ciudad
 								.getNombre()));
-//					}else{					
-//						long organizacion[];
-//						organizacion=themeDisplay.getUser().getOrganizationIds();
-//						for(Long orga : organizacion){
-//							if(ciudad.getOrganizacion().equals(orga.toString())){
-//								ciudadesItems.add(new SelectItem(ciudad.getCodigo(), ciudad
-//								.getNombre()));
-//							}
-//						}
-//					}
+					}else{					
+					try{
+						List<UsuarioCiudad> allUsuarioCiudad = serviceDao.getUsuarioCiudadDao().loadAll(UsuarioCiudad.class);
+						for(UsuarioCiudad usuciud: allUsuarioCiudad)
+						{			
+							if((usuciud.getUserid().trim()).equals(String.valueOf(userID).trim())){
+								if(usuciud.getCiudad().equals(ciudad.getDepartamento())){
+									ciudadesItems.add(new SelectItem(ciudad.getCodigo(), ciudad.getNombre()));
+								}
+							}
+						}
+					}catch (Exception e) {
+						System.out.println(e.getMessage());
+					}	
+				}
 				}
 
 			} catch (Exception e) {

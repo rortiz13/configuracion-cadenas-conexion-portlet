@@ -395,10 +395,8 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 					}else{	
 						try{
 							List<UsuarioCiudad> allUsuarioCiudad = serviceDao.getUsuarioCiudadDao().loadAll(UsuarioCiudad.class);
-							System.out.println("TAMA: "+allUsuarioCiudad.size());
 							for(UsuarioCiudad usuciud: allUsuarioCiudad)
 							{			
-								System.out.println(usuciud.getCiudad()+" - "+usuciud.getUserid());
 								if((usuciud.getUserid().trim()).equals(String.valueOf(userID).trim())){
 									if(usuciud.getCiudad().equals(ciudad.getDepartamento())){
 										ciudadesItems.add(new SelectItem(ciudad.getCodigo(), ciudad.getNombre()));
