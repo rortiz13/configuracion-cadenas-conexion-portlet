@@ -102,22 +102,8 @@ public class DocumentosBean extends BaseBean implements Serializable{
 	
 	@PostConstruct
 	public void init(){
-		FacesContext context = FacesContext.getCurrentInstance();
-		PortletRequest portletRequest = (PortletRequest) context.getExternalContext().getRequest();
-		ThemeDisplay  themeDisplay = (ThemeDisplay) portletRequest.getAttribute(WebKeys.THEME_DISPLAY);
-		long _roles[];
-		try {
-			_roles=themeDisplay.getUser().getRoleIds();
-			for(Long rol : _roles){				
-				if(rol == 10209){
-					nuevoRegistro = new RepositorioDoc();
-					cargaFiltrosDataModel();
-				}
-			}
-		} catch (SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
+		nuevoRegistro = new RepositorioDoc();
+		cargaFiltrosDataModel();
 	}
 	
 	public void changeflg(){
