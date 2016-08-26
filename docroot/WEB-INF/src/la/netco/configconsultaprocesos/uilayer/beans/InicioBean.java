@@ -19,11 +19,12 @@ public class InicioBean extends BaseBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public InicioBean(String resource) {
-		super(resource);
-		// TODO Auto-generated constructor stub
+	public static String RESOURCE =  "la.netco.configconsultaprocesos.cadenaconexion";
+
+	public InicioBean(){
+		super(RESOURCE);		
 	}
-	
+		
 	public boolean esAdmin(){
 		boolean band = false;
 		
