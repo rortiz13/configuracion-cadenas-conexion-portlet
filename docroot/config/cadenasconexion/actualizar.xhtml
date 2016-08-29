@@ -63,6 +63,9 @@
 						<f:validateLength maximum="20"></f:validateLength>	
 					</h:inputSecret>		
 					
+					<h:outputLabel value="#{i18n['activo']}"></h:outputLabel>
+					<h:selectBooleanCheckbox value="#{cadenaConexionBean.registroSelecionado.habilitado}"   
+					required="true" label="#{i18n['activo']}" disabled="true"  />
 					
 					<h:outputLabel value="#{i18n['buscar-responsable']}"></h:outputLabel>
 					<h:inputText disabled="true" value="#{cadenaConexionBean.registroSelecionado.mailResponsable}" validatorMessage="Formato de email invalido"
