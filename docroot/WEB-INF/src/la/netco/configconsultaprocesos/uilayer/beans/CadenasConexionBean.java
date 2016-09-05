@@ -366,12 +366,13 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 
 		ThemeDisplay  themeDisplay = (ThemeDisplay) portletRequest.getAttribute(WebKeys.THEME_DISPLAY);
 		long roles[], userID;
-		roles=themeDisplay.getUser().getRoleIds();
+		roles = themeDisplay.getUser().getRoleIds();
 		userID = themeDisplay.getUser().getUserId();
 		boolean flg=false;
 		for(Long rol : roles){
 			if(rol==10209){
-				flg=true;			}
+				flg=true;			
+			}
 		}
 		
 		if (ciudadesItems == null) {
@@ -398,7 +399,7 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 							for(UsuarioCiudad usuciud: allUsuarioCiudad)
 							{			
 								if((usuciud.getUserid().trim()).equals(String.valueOf(userID).trim())){
-									if(usuciud.getCiudad().equals(ciudad.getDepartamento())){
+									if(usuciud.getCiudad().equals(ciudad.getCodigo())){
 										ciudadesItems.add(new SelectItem(ciudad.getCodigo(), ciudad.getNombre()));
 									}
 								}

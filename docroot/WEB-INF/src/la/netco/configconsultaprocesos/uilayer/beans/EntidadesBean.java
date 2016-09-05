@@ -300,7 +300,7 @@ public class EntidadesBean extends BaseBean implements Serializable{
 						for(UsuarioCiudad usuciud: allUsuarioCiudad)
 						{			
 							if((usuciud.getUserid().trim()).equals(String.valueOf(userID).trim())){
-								if(usuciud.getCiudad().equals(ciudad.getDepartamento())){
+								if(usuciud.getCiudad().equals(ciudad.getCodigo())){
 									ciudadesItems.add(new SelectItem(ciudad.getCodigo(), ciudad.getNombre()));
 								}
 							}
