@@ -13,15 +13,15 @@
                 topGroupCollapsedRightIcon="chevronDown" itemLeftIcon="disc"
 				activeItem="#{current}">
 			<rich:panelMenuGroup  label="#{i18n['configuracion']}" expanded="true" > 
-						<rich:panelMenuItem id="gestionCadenasConexion" label="#{i18n['cadenas-conexion']}"  action="gestionCadenasConexion" rendered="#{cadenaConexionBean.permittedToView}" >
-							 <f:setPropertyActionListener target="#{current}" value="gestionCadenasConexion" />
-						</rich:panelMenuItem>	
-						<rich:panelMenuItem id="gestionEntidadesEspecialidad" label="#{i18n['entidades-especialidades']}"  action="gestionEntidadesEspecialidad" rendered="#{entidadesBean.permittedToView}" >
-							 <f:setPropertyActionListener target="#{current}" value="gestionEntidadesEspecialidad"/>
-						</rich:panelMenuItem>
-						<rich:panelMenuItem id="gestionDocumentos"  label="#{i18n['documentos']}"  action="gestionDocumentos" rendered="#{cadenaConexionBean.esadmin}">
-							 <f:setPropertyActionListener target="#{current}" value="gestionDocumentos"/>
-						</rich:panelMenuItem>
+				<rich:panelMenuItem id="gestionCadenasConexion" label="#{i18n['cadenas-conexion']}"  action="gestionCadenasConexion" rendered="#{cadenaConexionBean.permittedToView}" >
+					 <f:setPropertyActionListener target="#{current}" value="gestionCadenasConexion" />
+				</rich:panelMenuItem>	
+				<rich:panelMenuItem id="gestionEntidadesEspecialidad" label="#{i18n['entidades-especialidades']}"  action="gestionEntidadesEspecialidad" rendered="#{entidadesBean.permittedToView}" >
+					 <f:setPropertyActionListener target="#{current}" value="gestionEntidadesEspecialidad"/>
+				</rich:panelMenuItem>
+				<rich:panelMenuItem id="gestionDocumentos"  label="#{i18n['documentos']}"  action="gestionDocumentos" rendered="#{cadenaConexionBean.esadmin}">
+					 <f:setPropertyActionListener target="#{current}" value="gestionDocumentos"/>
+				</rich:panelMenuItem>
 																			
 			</rich:panelMenuGroup>
 		</rich:panelMenu>

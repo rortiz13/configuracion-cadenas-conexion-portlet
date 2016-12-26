@@ -3,6 +3,7 @@ package la.netco.configconsultaprocesos.services.impl;
 import javax.annotation.Resource;
 
 import la.netco.configconsultaprocesos.persistence.dto.Alcance;
+import la.netco.configconsultaprocesos.persistence.dto.Auditoria;
 import la.netco.configconsultaprocesos.persistence.dto.CadenaConexion;
 import la.netco.configconsultaprocesos.persistence.dto.CadenaUsuario;
 import la.netco.configconsultaprocesos.persistence.dto.CadenaUsuarioPK;
@@ -31,6 +32,7 @@ public class ServiceDaoImpl implements ServiceDao {
 	private GenericDao<Alcance, String> alcanceDao;
 	private GenericDao<RepositorioDoc, Integer> repositorioDocDao;
 	private GenericDao<UsuarioCiudad, String> usuariociudadDao;
+	private GenericDao<Auditoria, Integer> auditoriaDao;
 	@Autowired
 	@Resource(name="genericDao")
 	public void setGenericCommonDao(GenericDao<?, ?> genericCommonDao) {
@@ -111,7 +113,11 @@ public class ServiceDaoImpl implements ServiceDao {
 		return usuariociudadDao;
 	}
 
-	
-	
-	
+
+	@SuppressWarnings("unchecked")
+	public GenericDao<Auditoria, Integer> getAuditoriaDao() {
+		auditoriaDao  = (GenericDao<Auditoria, Integer> )genericCommonDao;		
+		auditoriaDao.setType(Auditoria.class);
+		return auditoriaDao;
+	}	
 }

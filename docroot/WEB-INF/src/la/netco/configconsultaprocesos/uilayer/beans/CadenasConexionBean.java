@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import javax.faces.model.SelectItem;
 import javax.portlet.PortletRequest;
 
 import la.netco.configconsultaprocesos.persistence.dto.Alcance;
+import la.netco.configconsultaprocesos.persistence.dto.Auditoria;
 import la.netco.configconsultaprocesos.persistence.dto.CadenaConexion;
 import la.netco.configconsultaprocesos.persistence.dto.Ciudad;
 import la.netco.configconsultaprocesos.persistence.dto.UsuarioCiudad;
@@ -35,6 +37,8 @@ import org.hibernate.criterion.Restrictions;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.SortFactoryUtil;
@@ -52,7 +56,7 @@ import com.liferay.util.bridges.jsf.common.JSFPortletUtil;
 @ViewScoped
 public class CadenasConexionBean  extends BaseBean implements Serializable{
 
-
+	private static Log _log = LogFactoryUtil.getLog(CadenasConexionBean.class);
 	private static final long serialVersionUID = 1L;
 	private List<SelectItem> ciudadesItems;
 	private List<SelectItem> alcanceItems;
@@ -79,19 +83,34 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 	private boolean conexionexitosa;
 	private boolean esadmin;
 	private boolean probarconexion = false;
+	
+	//-- Objeto de Auditoria --//	
+	private Auditoria registroAuditoria;
 
 	public static String RESOURCE =  "la.netco.configconsultaprocesos.cadenaconexion";
 
 	public CadenasConexionBean(){
 		super(RESOURCE);		
 	}
-
 	
+	//---- Metodos de objeto Auditoria --------//
+	public Auditoria getRegistroAuditoria() {
+		return registroAuditoria;
+	}
+
+
+	public void setRegistroAuditoria(Auditoria registroAuditoria) {
+		this.registroAuditoria = registroAuditoria;
+	}	
+	//----- fin Metodos de objeto Auditoria -----//
+
+
 	private List<String> autocompleteList;
 	
 	@PostConstruct
 	public void init(){
 		nuevoRegistro = new CadenaConexion();
+		registroAuditoria = new Auditoria();
 		cargaFiltrosDataModel();
 	}
 	
@@ -102,7 +121,7 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 
 		private CadenaConexionDataModel() {
 			super(CadenaConexion.class);
-			setOrderBy(Order.asc("id"));
+			setOrderBy(Order.asc("ciudad"));
 		}
 
 		@Override
@@ -198,6 +217,7 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 			idAlcance=registroSelecionado.getAlcance().getCodigo();
 			idCiudadSeleccionada = registroSelecionado.getCiudad().getCodigo();
 
+			registroAuditoria = new Auditoria();
 		
 		}else{
 //			registroSelecionado = new CadenaConexion();
@@ -208,6 +228,7 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 	
 	public String  crearRegistro() {
 		String page =null;
+		String cadenaActual = null;
 		try {
 			System.out.println("Inicia Probando Conexion");
 			probarCadenaConexionNuevo();
@@ -224,10 +245,10 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 			System.out.println("2 ");
 			nuevoRegistro.setCadenaConexion(dataSource.toString());
 			System.out.println("3 ");
-			int i=serviceDao.getCadenaConexionDao().create(nuevoRegistro);
-			System.out.println("4 ");		
-//			Integer id_cadena = serviceDao.getCadenaConexionDao().create(nuevoRegistro);
-//			
+			int i = serviceDao.getCadenaConexionDao().create(nuevoRegistro);
+			System.out.println("4 ");	
+			
+			/**/
 //			
 //			if(id_cadena != null && !id_cadena.equals(0)){				
 //				
@@ -243,7 +264,37 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 			
 			page = "transaccionExitosa";
 			System.out.println("Valor de Habilitado: "+nuevoRegistro.getHabilitado());
+			
+			//------------ Creacion de registro en Auditoria ------------------//
+			FacesContext context = FacesContext.getCurrentInstance();
+			PortletRequest portletRequest = (PortletRequest) context.getExternalContext().getRequest();
+
+			ThemeDisplay  themeDisplay = (ThemeDisplay) portletRequest.getAttribute(WebKeys.THEME_DISPLAY);
+			long userID = themeDisplay.getUser().getUserId();
+			
+			
+			cadenaActual = nuevoRegistro.getIpBaseDatos().trim()+", ";
+			cadenaActual += nuevoRegistro.getCiudad().getCodigo().trim()+", ";
+			cadenaActual += nuevoRegistro.getNombreBaseDatos().trim()+", ";
+			cadenaActual += nuevoRegistro.getUsuarioBaseDatos().trim()+", ";
+			cadenaActual += nuevoRegistro.getContrasenaBaseDatos().trim()+", ";
+			cadenaActual += nuevoRegistro.getHabilitado()+", ";
+			cadenaActual += nuevoRegistro.getCadenaConexion()+", ";
+			cadenaActual += nuevoRegistro.getMailResponsable();
+			
+			registroAuditoria.setFecha(new Date());
+			registroAuditoria.setIdUsuario((int)(userID));
+			registroAuditoria.setIdCadena(i);
+			registroAuditoria.setAccion(1);
+			registroAuditoria.setCadenaAnterior("");
+			registroAuditoria.setCadenaActual(cadenaActual);
+			int id_auditoria = serviceDao.getAuditoriaDao().create(registroAuditoria);
+			
+			registroAuditoria = new Auditoria();
+			
+			//------------ Fin de Creacion de registro de Auditoria ---------------//
 			nuevoRegistro = new CadenaConexion();
+			
 		} catch (Exception e) {
 			System.out.println("errocito "+e);
 			FacesMessageUtil.error(FacesContext.getCurrentInstance(), Constants.ERROR_OPERACION);
@@ -255,11 +306,15 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 	
 	public String  actualizarRegistro() {
 		String page =null;
+		String cadenaActual = null, cadenaAnterior = null;
 		try {
 			
 			boolean flg=false;
 			System.out.println("Inicia Probando Conexion(Actualizar)");
 			probarCadenaConexionActualizar();
+			
+			CadenaConexion registroAnterior = serviceDao.getCadenaConexionDao().read(idRegSeleccionado);
+			
 			System.out.println("Valor de Habilitado: "+registroSelecionado.getHabilitado());
 			registroSelecionado.setCiudad(serviceDao.getCiudadDao().read(idCiudadSeleccionada));
 			registroSelecionado.setAlcance(serviceDao.getAlcanceDao().read(idAlcance));	
@@ -276,6 +331,46 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 			
 			page = "transaccionExitosa";
 			
+			//------------ Creacion de registro en Auditoria ------------------//
+			
+			FacesContext context = FacesContext.getCurrentInstance();
+			PortletRequest portletRequest = (PortletRequest) context.getExternalContext().getRequest();
+
+			ThemeDisplay  themeDisplay = (ThemeDisplay) portletRequest.getAttribute(WebKeys.THEME_DISPLAY);
+			long userID = themeDisplay.getUser().getUserId();
+			
+			cadenaActual = registroSelecionado.getIpBaseDatos().trim()+", ";
+			cadenaActual += registroSelecionado.getCiudad().getCodigo().trim()+", ";
+			cadenaActual += registroSelecionado.getNombreBaseDatos().trim()+", ";
+			cadenaActual += registroSelecionado.getUsuarioBaseDatos().trim()+", ";
+			cadenaActual += registroSelecionado.getContrasenaBaseDatos().trim()+", ";
+			cadenaActual += registroSelecionado.getHabilitado()+", ";
+			cadenaActual += registroSelecionado.getCadenaConexion()+", ";
+			cadenaActual += registroSelecionado.getMailResponsable();
+			
+			cadenaAnterior = registroAnterior.getIpBaseDatos().trim()+", ";
+			cadenaAnterior += registroAnterior.getCiudad().getCodigo().trim()+", ";
+			cadenaAnterior += registroAnterior.getNombreBaseDatos().trim()+", ";
+			cadenaAnterior += registroAnterior.getUsuarioBaseDatos().trim()+", ";
+			cadenaAnterior += registroAnterior.getContrasenaBaseDatos().trim()+", ";
+			cadenaAnterior += registroAnterior.getHabilitado()+", ";
+			cadenaAnterior += registroAnterior.getCadenaConexion()+", ";
+			cadenaAnterior += registroAnterior.getMailResponsable();
+			
+			_log.info("Registro: "+cadenaActual+" ... "+cadenaAnterior);
+			
+			registroAuditoria.setFecha(new Date());
+			registroAuditoria.setIdUsuario((int)(userID));
+			registroAuditoria.setIdCadena(idRegSeleccionado);
+			registroAuditoria.setAccion(3);
+			registroAuditoria.setCadenaAnterior(cadenaAnterior);
+			registroAuditoria.setCadenaActual(cadenaActual);
+			int id_auditoria = serviceDao.getAuditoriaDao().create(registroAuditoria);
+			
+			registroAuditoria = new Auditoria();
+			
+			//------------ Fin de Creacion de registro de Auditoria ---------------//
+			
 			return cargaFiltrosDataModel();
 //			registroSelecionado = new CadenaConexion();
 		} catch (Exception e) {
@@ -289,7 +384,10 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 	
 	public String  eliminarRegistro() {
 		String page =null;
+		String cadenaAnterior = null;
 		try {
+			
+			CadenaConexion registroAnterior = serviceDao.getCadenaConexionDao().read(idRegSeleccionado);
 			
 			registroSelecionado.setCiudad(serviceDao.getCiudadDao().read(idCiudadSeleccionada));
 			registroSelecionado = serviceDao.getCadenaConexionDao().read(idRegSeleccionado);
@@ -298,6 +396,34 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 			FacesMessageUtil.info(FacesContext.getCurrentInstance(), Constants.OPERACION_EXITOSA);
 			
 			page = "transaccionExitosa";
+			
+			//------------ Creacion de registro en Auditoria ------------------//
+			
+			FacesContext context = FacesContext.getCurrentInstance();
+			PortletRequest portletRequest = (PortletRequest) context.getExternalContext().getRequest();
+
+			ThemeDisplay  themeDisplay = (ThemeDisplay) portletRequest.getAttribute(WebKeys.THEME_DISPLAY);
+			long userID = themeDisplay.getUser().getUserId();
+			
+			cadenaAnterior = registroAnterior.getIpBaseDatos().trim()+", ";
+			cadenaAnterior += registroAnterior.getCiudad().getCodigo().trim()+", ";
+			cadenaAnterior += registroAnterior.getNombreBaseDatos().trim()+", ";
+			cadenaAnterior += registroAnterior.getUsuarioBaseDatos().trim()+", ";
+			cadenaAnterior += registroAnterior.getContrasenaBaseDatos().trim()+", ";
+			cadenaAnterior += registroAnterior.getHabilitado()+", ";
+			cadenaAnterior += registroAnterior.getCadenaConexion()+", ";
+			cadenaAnterior += registroAnterior.getMailResponsable();
+			
+			registroAuditoria.setFecha(new Date());
+			registroAuditoria.setIdUsuario((int)(userID));
+			registroAuditoria.setIdCadena(idRegSeleccionado);
+			registroAuditoria.setAccion(2);
+			registroAuditoria.setCadenaAnterior(cadenaAnterior);
+			registroAuditoria.setCadenaActual("");
+			int id_auditoria = serviceDao.getAuditoriaDao().create(registroAuditoria);
+			
+			registroAuditoria = new Auditoria();
+			
 			registroSelecionado = new CadenaConexion();
 		} catch (Exception e) {
 			FacesMessageUtil.error(FacesContext.getCurrentInstance(), Constants.ERROR_OPERACION);
@@ -389,24 +515,34 @@ public class CadenasConexionBean  extends BaseBean implements Serializable{
 					
 				});
 				ciudadesItems = new ArrayList<SelectItem>();
-		
-				for (Ciudad ciudad : allCiudades) {
-					if(flg){
+				if(flg)
+				{
+					for (Ciudad ciudad : allCiudades) {
 						ciudadesItems.add(new SelectItem(ciudad.getCodigo(), ciudad.getNombre()));
-					}else{	
-						try{
-							List<UsuarioCiudad> allUsuarioCiudad = serviceDao.getUsuarioCiudadDao().loadAll(UsuarioCiudad.class);
-							for(UsuarioCiudad usuciud: allUsuarioCiudad)
-							{			
-								if((usuciud.getUserid().trim()).equals(String.valueOf(userID).trim())){
-									if(usuciud.getCiudad().equals(ciudad.getCodigo())){
-										ciudadesItems.add(new SelectItem(ciudad.getCodigo(), ciudad.getNombre()));
+					}
+				}
+				else
+				{
+					List<UsuarioCiudad> allUsuarioCiudad = serviceDao.getUsuarioCiudadDao().loadAll(UsuarioCiudad.class);
+					for(UsuarioCiudad usuciud: allUsuarioCiudad)
+					{
+						if((usuciud.getUserid().trim()).equals(String.valueOf(userID).trim()))
+						{
+							for (Ciudad ciudad : allCiudades) 
+							{
+								if(usuciud.getCiudad().equals(ciudad.getCodigo()))
+								{
+									String codigo_departamento = ciudad.getDepartamento();
+									for (Ciudad ciudad2 : allCiudades) 
+									{
+										if(codigo_departamento.equals(ciudad2.getDepartamento()))
+										{
+											ciudadesItems.add(new SelectItem(ciudad2.getCodigo(), ciudad2.getNombre()));
+										}
 									}
 								}
 							}
-						}catch (Exception e) {
-							System.out.println(e.getMessage());
-						}						
+						}
 					}
 				}
 

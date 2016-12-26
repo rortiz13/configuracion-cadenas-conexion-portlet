@@ -2,9 +2,7 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
                                          "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-	<session-factory name="">
-
-		
+	<session-factory name="">		
 		<mapping class="la.netco.configconsultaprocesos.persistence.dto.Ciudad" />
 		<mapping class="la.netco.configconsultaprocesos.persistence.dto.Entidad" />		
 		<mapping class="la.netco.configconsultaprocesos.persistence.dto.Especialidad" />		
@@ -14,5 +12,6 @@
 		<mapping class="la.netco.configconsultaprocesos.persistence.dto.Alcance" />
 		<mapping class="la.netco.configconsultaprocesos.persistence.dto.RepositorioDoc" />
 		<mapping class="la.netco.configconsultaprocesos.persistence.dto.UsuarioCiudad" />
+		<mapping class="la.netco.configconsultaprocesos.persistence.dto.Auditoria" />
 	</session-factory>
 </hibernate-configuration>
